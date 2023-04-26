@@ -9,7 +9,9 @@ import 'element-ui/lib/theme-chalk/index.css';
 import VueCookies from 'vue-cookies'
 import store from './store'
 import VueCoreVideoPlayer from 'vue-core-video-player'
+import * as echarts from 'echarts'
 
+Vue.prototype.$echarts =echarts
 
 Vue.use(VueCookies)
 Vue.use(VueCoreVideoPlayer, {

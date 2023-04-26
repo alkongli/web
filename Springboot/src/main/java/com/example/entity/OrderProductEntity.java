@@ -1,10 +1,9 @@
 package com.example.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import lombok.Data;
 
@@ -34,6 +33,10 @@ public class OrderProductEntity implements Serializable {
 	 */
 	private Long productId;
 	/**
+	 * 商品类型id
+	 */
+	private Long typeId;
+	/**
 	 * 商品名称
 	 */
 	private String name;
@@ -58,5 +61,10 @@ public class OrderProductEntity implements Serializable {
 	 * 商品数量
 	 */
 	private Integer number;
+	/**
+	 * 创建时间
+	 */
+	@TableField(fill = FieldFill.INSERT)
+	private LocalDateTime createTime;
 
 }

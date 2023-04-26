@@ -57,6 +57,9 @@
             <el-menu-item index="6" @click="click('Order')">
               <span slot="title">订单管理</span>
             </el-menu-item>
+            <el-menu-item index="7" @click="click('Monitoring')">
+              <span slot="title">平台监控</span>
+            </el-menu-item>
           </el-menu>
         </div>
       </div>
@@ -72,9 +75,10 @@ import ProductType from "../components/ProductType";
 import Product from "../components/Product";
 import SecKill from "../components/SecKill";
 import Order from "../components/Order";
+import Monitoring from "../components/Monitoring";
 export default {
   name: "Home",
-  components:{User,Employee,ProductType,Product,SecKill,Order},
+  components:{User,Employee,ProductType,Product,SecKill,Order,Monitoring},
   data() {
     var validatePass = (rule, value, callback) => {
       if (value === '') {

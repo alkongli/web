@@ -56,12 +56,13 @@ export default {
   methods: {
     submitFormAdd(formName) {
       let data = this.ruleForm
+      data.userId=JSON.parse(localStorage.getItem("Info")).id
       let axios=this.$axios
       this.$refs[formName].validate((valid) => {
         if (valid) {
           axios.post('/api/address/save',data).then((res)=>{
             if(res.data.code===1) {
-              this.$emit("close",false)
+              this.$router.go(-1)
               this.$message({
                 message: "添加成功",
                 type: 'success',
@@ -92,7 +93,7 @@ export default {
         if (valid) {
           axios.put("/api/address",data).then((res)=>{
             if(res.data.code===1) {
-              this.$emit("close",false)
+              this.$router.go(-1)
               this.$message({
                 message: "修改成功",
                 type: 'success',

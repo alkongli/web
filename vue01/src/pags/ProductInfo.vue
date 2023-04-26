@@ -213,6 +213,7 @@ export default {
           orders.orderProduct=[]
 
           let orderProduct={}
+          orderProduct.typeId=this.productInfo.typeId
           orderProduct.productId=this.productInfo.id
           orderProduct.name=this.productInfo.name
           orderProduct.img=this.productInfo.img

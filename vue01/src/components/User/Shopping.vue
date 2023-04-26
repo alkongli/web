@@ -187,6 +187,7 @@ export default {
             orders.orderProduct=[]
             for(let i=0;i<this.selectProduct.length;i++){
               let orderProduct={}
+              orderProduct.typeId=this.selectProduct[i].productEntity.typeId
               orderProduct.productId=this.selectProduct[i].productEntity.id
               orderProduct.name=this.selectProduct[i].productEntity.name
               orderProduct.img=this.selectProduct[i].productEntity.img

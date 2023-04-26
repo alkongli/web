@@ -5,13 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.example.common.CustomException;
 import com.example.common.Result;
 import com.example.dao.AddressDao;
+import com.example.dao.ProductTypeDao;
 import com.example.dto.OrdersDto;
-import com.example.entity.AddressEntity;
-import com.example.entity.OrderProductEntity;
-import com.example.entity.ProductEntity;
-import com.example.service.AddressService;
-import com.example.service.OrderProductService;
-import com.example.service.ProductService;
+import com.example.entity.*;
+import com.example.service.*;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -19,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,8 +27,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 
 import com.example.dao.OrdersDao;
-import com.example.entity.OrdersEntity;
-import com.example.service.OrdersService;
 
 import javax.annotation.Resource;
 
@@ -43,6 +39,9 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, OrdersEntity> impl
 
     @Resource
     private OrderProductService orderProductService;
+
+    @Resource
+    private ProductTypeDao productTypeDao;
 
     @Resource
     private AddressDao addressDao;
@@ -163,6 +162,71 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, OrdersEntity> impl
             }
 
         }
+    }
+
+    /**
+     * Monitoring 页面数据获取
+     */
+    public Map<String,Object> getOrderMonitor(String[] days1,String[] days2){
+        Map<String,Object> map=new HashMap<String,Object>();
+        List<ProductTypeEntity> allTypes = productTypeDao.getAllType();
+//        1待付款，2待派送，3待签收，4已完成，5已取消
+//        {"订单总金额", "订单实际收款", "订单未支付金额", "订单撤销金额"}
+        Integer[] all= new Integer[]{1,5};
+
+        double[][] typeArray=new double[allTypes.size()][7];
+        double[][] amountArray=new double[3][4];
+
+        int num1=0;
+        LambdaQueryWrapper<OrderProductEntity> lambdaQueryWrapper1=new LambdaQueryWrapper<>();
+        lambdaQueryWrapper1.between(OrderProductEntity::getCreateTime,days1[0]+" 00:00:00",days1[days1.length-1]+" 23:59:59");
+        List<OrderProductEntity> list = orderProductService.list(lambdaQueryWrapper1);
+
+        for (ProductTypeEntity productTypeEntity:allTypes) {
+            List<OrderProductEntity> dataList = list.stream().filter(data->(data.getTypeId()).equals(productTypeEntity.getId())).collect(Collectors.toList());
+            for (int i = 0; i < days1.length; i++) {
+                int j=i;
+                List<OrderProductEntity> collect = dataList.stream().filter(data -> (data.getCreateTime() + "").contains(days1[j])).collect(Collectors.toList());
+                for (OrderProductEntity orderProductEntity:collect){
+                    typeArray[num1][i]+=Double.parseDouble(orderProductEntity.getNumber()+"");
+                }
+            }
+            num1++;
+        }
+        map.put("typeArray",typeArray);
+
+        int num2=0;
+        LambdaQueryWrapper<OrdersEntity> lambdaQueryWrapper2=new LambdaQueryWrapper<>();
+        lambdaQueryWrapper2.between(OrdersEntity::getOrderTime,days2[0]+" 00:00:00",days2[days2.length-1]+" 23:59:59");
+        List<OrdersEntity> list2 = this.list(lambdaQueryWrapper2);
+
+        for (int i = 0; i < days2.length; i++) {
+            int j=i;
+            List<OrdersEntity> collect = list2.stream().filter(data -> (data.getOrderTime() + "").contains(days2[j])).collect(Collectors.toList());
+            for (OrdersEntity ordersEntity:collect){
+                amountArray[num2][0]+=Double.parseDouble(ordersEntity.getAmount()+"");
+            }
+            num2++;
+        }
+
+        num2=0;
+
+        for (Integer s:all) {
+            List<OrdersEntity> dataList = list2.stream().filter(data->(data.getStatus()).equals(s)).collect(Collectors.toList());
+            for (int i = 0; i < days2.length; i++) {
+                int j=i;
+                List<OrdersEntity> collect = dataList.stream().filter(data -> (data.getOrderTime() + "").contains(days2[j])).collect(Collectors.toList());
+                for (OrdersEntity ordersEntity:collect){
+                    amountArray[num2][i+2]+=Double.parseDouble(ordersEntity.getAmount()+"");
+                }
+            }
+            amountArray[num2][1]=amountArray[num2][0]-amountArray[num2][2]-amountArray[num2][3];
+            num2++;
+        }
+        map.put("amountArray",amountArray);
+
+        map.put("code",1);
+        return map;
     }
 
 }

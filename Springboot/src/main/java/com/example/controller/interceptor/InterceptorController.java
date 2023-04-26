@@ -18,9 +18,9 @@ public class InterceptorController implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        String employeeId = request.getHeader("EAuthorization");
+        String employeeId = request.getHeader("EAuthorization")+"";
 
-        String userId = request.getHeader("Authorization");
+        String userId = request.getHeader("Authorization")+"";
 
         boolean matchEmployee = PATH_MATCHER.match("/employee/**", request.getRequestURI());
 

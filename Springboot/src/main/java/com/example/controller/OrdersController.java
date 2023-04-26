@@ -96,6 +96,14 @@ public class OrdersController {
     }
 
     /**
+     * 获取平台监控数据
+     */
+    @PostMapping("/getOrderMonitor")
+    public Map<String,Object> getOrderMonitor(@RequestBody Map<String,String[]> day){
+        return ordersService.getOrderMonitor(day.get("day1"),day.get("day2"));
+    }
+
+    /**
      * 保存
      */
     @PostMapping("/save")

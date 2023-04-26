@@ -55,6 +55,9 @@ export default {
   },
   created() {
     this.getAddress()
+
+    if(this.radio==="")
+        this.radio=0
   },
   methods:{
     getAddress(){

@@ -41,5 +41,10 @@ public interface OrdersService extends IService<OrdersEntity> {
      * 取消订单，修改商品库存
      */
     public void returnProduct(OrdersDto orders);
+
+    /**
+     * Monitoring 页面数据获取
+     */
+    public Map<String,Object> getOrderMonitor(String[] days1,String[] days2);
 }
 
