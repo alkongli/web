@@ -136,7 +136,7 @@ export default {
 
     },
 
-    loadLine(chart,xData,legends,data,rightIndexs = []){
+    loadLine(chart,xData,legends,data,rightIndexes = []){
       chart && chart.clear()
       const colors = ['#59ff00','#ff00b7','#ffd500','#00ffff','#01CF87','#1890FF','#FFBE69','#8568FE','#EF4747','#249BAD']
       let series = legends.map((item,index) => {
@@ -144,7 +144,7 @@ export default {
           name: item,
           type: 'line',
           smooth: true,
-          yAxisIndex: rightIndexs.includes(index) ? 1 : 0,
+          yAxisIndex: rightIndexes.includes(index) ? 1 : 0,
           symbol: 'circle',
           symbolSize: 5,
           itemStyle:{
@@ -245,7 +245,7 @@ export default {
           {
             type : 'value',
             axisLine: {
-              show: rightIndexs.length > 0,
+              show: rightIndexes.length > 0,
               lineStyle: {
                 color: '#070707',
               }
@@ -261,7 +261,7 @@ export default {
               show: false
             },
             splitLine:{
-              show: rightIndexs.length > 0,
+              show: rightIndexes.length > 0,
               lineStyle:{
                 color: '#070707',
               }
