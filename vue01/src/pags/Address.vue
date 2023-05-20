@@ -35,7 +35,7 @@ export default {
   },
   watch:{
     radio(now,before){
-      if(before!==''){
+      if(before!==''&&before!==0){
         let data={}
         data.id=now
         data.userId=this.userId

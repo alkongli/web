@@ -77,4 +77,9 @@ public class ProductEntity implements Serializable {
 	@TableField(fill = FieldFill.INSERT_UPDATE)
 	private LocalDateTime updateTime;
 
+	/**
+	 * 商品更新员工
+	 */
+	private Long employeeId;
+
 }

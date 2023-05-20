@@ -173,6 +173,7 @@ export default {
       let data = this.ruleForm
       data.typeId=this.ruleForm.type
       data.sizeList=this.ruleForm.sizeList.toString()
+      data.employeeId=JSON.parse(localStorage.getItem("ElementInfo")).id
       data.discount=1
       let axios=this.$axios
       this.$refs[formName].validate((valid) => {
@@ -203,6 +204,7 @@ export default {
       let data = this.ruleForm
       data.id=this.userInfo.id
       data.sizeList=this.ruleForm.sizeList.toString()
+      data.employeeId=JSON.parse(localStorage.getItem("ElementInfo")).id
       if(this.ruleForm.type>0)
         data.typeId=this.ruleForm.type
       let axios=this.$axios

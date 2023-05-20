@@ -25,7 +25,6 @@ public class ConfirmMQConfig {
     //    备份队列
     private static final String CONFIRM2_QUEUE="confirm2Queue";
 
-
     //    死信交换机
     private static final String DEAD_EXCHANGE="deadExchange";
 

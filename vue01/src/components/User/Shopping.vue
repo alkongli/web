@@ -284,7 +284,7 @@ export default {
   box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
 }
 .order{
-  margin: 10px 10px;
+  margin: 2px 2px;
   display: inline-block;
   vertical-align: middle;/*垂直居中*/
 }

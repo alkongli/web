@@ -92,6 +92,13 @@
           <span style="margin-left: 10px">{{ scope.row.updateTime }}</span>
         </template>
       </el-table-column>
+      <el-table-column
+        label="更新员工"
+        width="120">
+        <template slot-scope="scope">
+          <span style="margin-left: 10px">{{ scope.row.employeeId }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
           <el-button

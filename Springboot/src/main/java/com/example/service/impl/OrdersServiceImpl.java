@@ -172,7 +172,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, OrdersEntity> impl
         List<ProductTypeEntity> allTypes = productTypeDao.getAllType();
 //        1待付款，2待派送，3待签收，4已完成，5已取消
 //        {"订单总金额", "订单实际收款", "订单未支付金额", "订单撤销金额"}
-        Integer[] all= new Integer[]{1,5};
+        String[] all= new String[]{"1","5"};
 
         double[][] typeArray=new double[allTypes.size()][7];
         double[][] amountArray=new double[3][4];
@@ -195,6 +195,7 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, OrdersEntity> impl
         }
         map.put("typeArray",typeArray);
 
+
         int num2=0;
         LambdaQueryWrapper<OrdersEntity> lambdaQueryWrapper2=new LambdaQueryWrapper<>();
         lambdaQueryWrapper2.between(OrdersEntity::getOrderTime,days2[0]+" 00:00:00",days2[days2.length-1]+" 23:59:59");
@@ -209,19 +210,22 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersDao, OrdersEntity> impl
             num2++;
         }
 
-        num2=0;
+        int num3;
 
-        for (Integer s:all) {
-            List<OrdersEntity> dataList = list2.stream().filter(data->(data.getStatus()).equals(s)).collect(Collectors.toList());
+        int y=0;
+        for (String s:all) {
+            num3=0;
+            List<OrdersEntity> dataList2 = list2.stream().filter(data-> (data.getStatus()+"").equals(s)).collect(Collectors.toList());
             for (int i = 0; i < days2.length; i++) {
-                int j=i;
-                List<OrdersEntity> collect = dataList.stream().filter(data -> (data.getOrderTime() + "").contains(days2[j])).collect(Collectors.toList());
-                for (OrdersEntity ordersEntity:collect){
-                    amountArray[num2][i+2]+=Double.parseDouble(ordersEntity.getAmount()+"");
+                int k=i;
+                List<OrdersEntity> collect2 = dataList2.stream().filter(data -> (data.getOrderTime() + "").contains(days2[k])).collect(Collectors.toList());
+                for (OrdersEntity ordersEntity:collect2){
+                    amountArray[num3][y+2]+=Double.parseDouble(ordersEntity.getAmount()+"");
                 }
+                amountArray[num3][1]=amountArray[num3][0]-amountArray[num3][2]-amountArray[num3][3];
+                num3++;
             }
-            amountArray[num2][1]=amountArray[num2][0]-amountArray[num2][2]-amountArray[num2][3];
-            num2++;
+            y+=1;
         }
         map.put("amountArray",amountArray);
 
