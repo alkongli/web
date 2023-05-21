@@ -52,13 +52,15 @@ export default {
 
     }
   },
-  created() {
+
+  mounted() {
     this.$axios.get('/api/productType/list').then((res)=>{
       this.productType=res.data.data
     })
     this.getData(this.getPassDay(7),this.getPassDay(3))
 
   },
+
   methods:{
     getData(day1,day2){
       let data={
@@ -70,7 +72,11 @@ export default {
           this.getLoadChar(day1,res.data.typeArray,day2,res.data.amountArray)
         }
         else {
-
+          this.$message({
+            message: "获取失败",
+            type: 'error',
+            duration: 1000
+          })
         }
       })
     },
